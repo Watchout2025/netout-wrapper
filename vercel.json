@@ -1,1 +1,8 @@
-/* /index.html 200
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
