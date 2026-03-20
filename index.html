@@ -10197,6 +10197,7 @@ window.addEventListener('popstate', (event) => {
     function showSection(sectionId) {
         const homeSection = document.getElementById('home-section');
         const newHotSection = document.getElementById('new-hot-section');
+		const liveSection = document.getElementById('live-section');
         const myNetflixSection = document.getElementById('my-netflix-section');
 
         const homeNav = document.getElementById('home-nav');
@@ -10231,6 +10232,7 @@ window.addEventListener('popstate', (event) => {
                 }
 				headerTitle.textContent = 'Home';
                 homeSection.classList.remove('section-hidden');
+				liveSection.style.display = "none";
                 homeNav.classList.add('active');
 				document.getElementById("search-section").style.display = "none";
                 searchPage.classList.remove('is-visible');
