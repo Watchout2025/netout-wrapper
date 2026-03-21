@@ -7275,8 +7275,8 @@ function formatTitleForHls(title) {
     return title
         .toLowerCase()
         .replace(/&/g, 'and')
-        .replace(/[,!*'"()\[\]{}]/g, '')     // remove symbols & brackets
-        .replace(/[:/?\- ]/g, '.')           // convert separators (including ?) to dots
+        .replace(/[^a-z0-9\s]/g, '')         // strip ALL special characters
+        .replace(/\s+/g, '.')                 // spaces → dots
         .replace(/\.\.+/g, '.')              // collapse multiple dots
         .replace(/^\.+|\.+$/g, '');          // trim dots
 }
