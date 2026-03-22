@@ -3320,6 +3320,8 @@ body{background: Black;}
     @media (max-width: 900px) {  
 		.tmdb-modal{
 		background: #000 !important;
+		transform: translateX(100%);
+		transform: translateY(0px) !important;
 		}
 		.content-manageProfile{
 			display:none;
@@ -7505,6 +7507,7 @@ async function openModal(id, mediaType) {
     overlay.style.display ='block';
     modal.style.visibility ='visible';
     modal.style.transform ='translateY(0)';
+	if (window.innerWidth < 900) { modal.style.transform = 'translateX(0)'; }
     modal.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
@@ -9188,8 +9191,16 @@ function closeModal() {
   
     playerWrap.innerHTML = ``;
 	channelSection.innerHTML = ``;
-    if (modal.style.transform !== 'translateY(100%)') {
-       modal.style.transform = 'translateY(100%)';
+    const isMobile = window.innerWidth < 900;
+
+    if (isMobile) {
+      if (modal.style.transform !== 'translateX(100%)') {
+        modal.style.transform = 'translateX(100%)';
+      }
+    } else {
+      if (modal.style.transform !== 'translateY(100%)') {
+        modal.style.transform = 'translateY(100%)';
+      }
     }
     overlay.style.display = 'none';
     document.body.style.overflow = '';
