@@ -3201,6 +3201,9 @@ body{background: Black;}
 
     /* Styles for desktop (medium and larger screens) */
     @media (min-width: 900px) { 
+		.tmdb-modal{
+	transform: translateY(100%);
+		}
 		.previewModal-audioToggle{
     pointer-events: none;}
 		.widget-player{
@@ -4879,7 +4882,6 @@ z-index: 9999;
 inset: 0;
 overflow-y: auto;
 scrollbar-width: none;
-transform: translateY(100%); /* Start off-screen at the bottom */
 transition: transform 0.4s ease-out;
 }
 
