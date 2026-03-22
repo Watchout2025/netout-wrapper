@@ -3483,7 +3483,8 @@ padding: 4%;
 .search-results-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+    row-gap: 20px;
+    column-gap: 8px;
     padding: 20px 0;
 }
 
@@ -3568,7 +3569,6 @@ padding: 4%;
     }
     
     .search-results-grid {
-        gap: 15px;
         padding: 15px 0;
     }
     
@@ -3582,13 +3582,6 @@ padding: 4%;
     
     .search-info h2 {
         font-size: 1.5rem;
-    }
-}
-
-/* Tablet adjustments */
-@media (min-width: 769px) {
-    .search-results-grid {
-        gap: 20px;
     }
 }
 
