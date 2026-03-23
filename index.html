@@ -7129,7 +7129,7 @@ async function getMovieStreamingAndDownloadLink(movieItem, movieReleaseYear) {
 
       if (fileCode) {
         // Build full playable link
-        currentPlayLink = `https://watchout-player.netlify.app/?url=${fileCode}`;
+        currentPlayLink = `https://watchout-player.netlify.app/?url=https://hlsproxy.bingeoutofficial.workers.dev/proxy/${fileCode}`;
         isHlsWorkerLink = true;
         sourceUsed = "GitHub";
         console.log(`✅ Found GitHub HLS code for "${movieTitle}": ${fileCode}`);
