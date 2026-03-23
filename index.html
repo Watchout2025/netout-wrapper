@@ -9991,60 +9991,83 @@ window.addEventListener("message", function (event) {
 
 <!-- URL Modal Handler - Movie, TV Show, and Season Support (Capital S Format) with Season Validation -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  // Check URL and open modal if query exists
+document.addEventListener('DOMContentLoaded', function() {
+  // Function to check URL and open modal if it matches pattern
 function checkUrlAndOpenModal(isInitialLoad = false) {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const movieId = urlParams.get("movie");
+  const movieId = urlParams.get('movie');
   if (movieId) {
     if (isInitialLoad) {
-      history.replaceState({ page: "section" }, "", location.pathname);
+      history.replaceState({ page: "browse" }, "", "/browse");
     }
-    openModal(movieId, "movie");
+    openModal(movieId, 'movie');
     return;
   }
 
-  const tvId = urlParams.get("tv");
+  const tvId = urlParams.get('tv');
   if (tvId) {
     if (isInitialLoad) {
-      history.replaceState({ page: "section" }, "", location.pathname);
+      history.replaceState({ page: "browse" }, "", "/browse");
     }
-    openModal(tvId, "tv");
+    openModal(tvId, 'tv');
     return;
   }
 
-  const chId = urlParams.get("channel");
+  const chId = urlParams.get('channel');
   if (chId) {
     if (isInitialLoad) {
-      history.replaceState({ page: "section" }, "", location.pathname);
+      history.replaceState({ page: "browse" }, "", "/browse");
     }
-    openModal(chId, "channel");
+    openModal(chId, 'channel');
+    return;
+  }
+
+  const trId = urlParams.get('track');
+  if (trId) {
+    if (isInitialLoad) {
+      history.replaceState({ page: "browse" }, "", "/browse");
+    }
+    openModal(trId, 'track');
     return;
   }
 }
+  
   // Handle browser back/forward navigation
-  window.addEventListener("popstate", function () {
-    const params = new URLSearchParams(window.location.search);
+  window.addEventListener('popstate', function () {
 
-    const movieId = params.get("movie");
-    const tvId = params.get("tv");
+  const params = new URLSearchParams(window.location.search);
+  const movieId = params.get('movie');
+  const tvId = params.get('tv');
 
-    if (movieId || tvId) {
-      // URL has movie or tv param → open modal
-      checkUrlAndOpenModal();
-    } else {
-      // No params → close modal
-      closeModal();
+  if (movieId || tvId) {
+    // If URL has movie or tv param → open modal
+    checkUrlAndOpenModal();
+  } else {
+    // If no params → close and clean modal
+    closeModal(); // pass true so it doesn't trigger history.back()
+  }
+
+});
+  
+  // Override the fetchEpisodes function to update URL when season changes
+  const originalFetchEpisodes = window.fetchEpisodes;
+  window.fetchEpisodes = function(seriesId, seasonNumber, seriesName) {
+    // Update URL to include season when manually changing seasons (using Capital S format)
+    const currentPath = window.location.pathname;
+    const tvMatch = currentPath.match(/\/tv\/(\d+)/);
+    
+    if (tvMatch) {
+      const newUrl = `/tv/${seriesId}/S${seasonNumber}`;
+      history.pushState({seriesId, seasonNumber}, '', newUrl);
     }
-  });
-
-  // Check URL on initial load
+    
+    // Call the original fetchEpisodes function
+    return originalFetchEpisodes(seriesId, seasonNumber, seriesName);
+  };
+  
+  // Check URL on initial page load
   checkUrlAndOpenModal(true);
-
-  // Handle routing on page load
-  handleRoute();
 });
 
 function handleRoute() {
@@ -10052,37 +10075,131 @@ function handleRoute() {
 
   if (path === "/movies") {
     renderMovieSections();
-
   } else if (path === "/tv") {
     renderTVSections();
-
   } else if (path === "/anime") {
     renderAnimeSections();
-
-  } else if (path === "/home" || path === "/") {
+  } else if (path === "/home") {
     renderHomeSections();
-
+  }	else if (path === "/") {
+    renderHomeSections();
   } else if (path === "/live") {
     renderLiveSections();
-
   } else if (path === "/my-list") {
     renderMyListSections();
-
   } else {
     console.warn(`No handler found for: ${path}`);
   }
 }
-
 function navigateTo(path) {
-  // Only push if path is different
+  // Only push if it's not already the same path
   if (location.pathname.toLowerCase() !== path.toLowerCase()) {
     history.pushState({}, "", path);
-    handleRoute();
   }
 }
 
-// Listen for back/forward navigation
+document.addEventListener("DOMContentLoaded", handleRoute);
 window.addEventListener("popstate", handleRoute);
+
+function playLiveStream(url, name) {
+    // 1. Safety: Remove any existing player overlay before creating a new one
+    const existingOverlay = document.getElementById('external-player-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+
+    // 2. Create the main Full-Screen Overlay container
+    const overlay = document.createElement('div');
+    overlay.id = 'external-player-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000000;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    `;
+
+    // 3. Create the Header Bar (Channel Name + Close Button)
+    const header = document.createElement('div');
+    header.style.cssText = `
+        height: 60px;
+        background-color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        color: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        border-bottom: 1px solid #333;
+        box-sizing: border-box;
+    `;
+    
+    // Channel Title
+    const title = document.createElement('div');
+    title.style.cssText = `
+        font-size: 18px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60%;
+    `;
+    title.textContent = `Streaming: ${name}`;
+    
+    // Close Button
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&#10005; Close Player';
+    closeBtn.style.cssText = `
+        background-color: #e11d48;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.2s;
+    `;
+    closeBtn.onmouseover = () => closeBtn.style.backgroundColor = '#be123c';
+    closeBtn.onmouseout = () => closeBtn.style.backgroundColor = '#e11d48';
+    
+    // Function to close the player and stop the stream
+    closeBtn.onclick = () => {
+        overlay.remove();
+    };
+
+    // 4. Create the Iframe
+    const iframe = document.createElement('iframe');
+    const encodedStreamUrl = encodeURIComponent(url);
+    iframe.src = `https://watchout-player.netlify.app/?url=${encodedStreamUrl}`;
+    
+    iframe.style.cssText = `
+        flex: 1;
+        width: 100%;
+        border: none;
+        background-color: #000;
+    `;
+    
+    // Essential iframe permissions for video playback
+    iframe.allow = "autoplay; encrypted-media; fullscreen; picture-in-picture";
+    iframe.setAttribute('allowfullscreen', 'true');
+
+    // 5. Assemble and inject into the DOM
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+    overlay.appendChild(header);
+    overlay.appendChild(iframe);
+    
+    document.body.appendChild(overlay);
+}
+
 </script>
 	
 	<script>
