@@ -4,87 +4,48 @@
 <head>
   <!-- Character Encoding -->
   <meta charset="UTF-8" />
+  <!-- SEO Meta Tags -->
+  <title>NetOut - Watch Movies, TV Shows, Animes & Dramas Online</title>
+  <meta name="description" content="Netout movies & TV shows online or stream right to your smart TV, game console, PC, Mac, mobile, tablet and more." />
+  <meta name="keywords" content="NetOut, Net Out, Watch movies, TV shows online, anime , drama series, OTT platform" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="/" />
+
+  <!-- Favicon & Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.png" />
+  <link rel="shortcut icon" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.png" type="image/png" />
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet" />
+
+  <!-- Open Graph Tags (for Facebook, WhatsApp, etc.) -->
+  <meta property="og:title" content="NetOut - Explore Movies, TV Shows, Animes & Dramas Online" />
+  <meta property="og:image" content="/icons/apple-touch-icon.png" />
+  <meta property="og:description" content="Explore your favorite movies, TV shows, anime, and dramas without signups on Netout." />
+  
+  <meta property="og:url" content="/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NetOut" />
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NetOut, Explore movies, TV shows online, anime , drama series, OTT platform" />
+  <meta name="twitter:description" content="Explore your favorite movies, TV shows, anime, and dramas without signups on NetOut." />
+  <meta name="twitter:image" content="/icons/apple-touch-icon.png" />
+  <meta name="twitter:site" content="@Netout_in" />
+
+  <!-- Language -->
+  <meta http-equiv="Content-Language" content="en" />
 
   <!-- Viewport & Responsive Settings -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#000000">
-  <link rel="apple-touch-icon" href="/icons/icon-192.png">
-
-
-  <!-- Monetag Verification -->
-  <meta name="monetag" content="c68b22fd4629b662a5e0ac0da0bdcd84" />
-  <meta name="monetag" content="aa7fff9bff8ecca762e186e8af784563" />
-  <!-- Google tag (gtag.js) -->
-<script>
-
-(async () => {
-  const API_URL = "https://workers-playground-autumn-mouse-86e7.watchoutofficial2006.workers.dev/?url=trending/all/week";
-  const IMAGE_BASE = "https://image.tmdb.org/t/p/w1280";
-
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    const images = data.results
-      .map(item => item.poster_path)
-      .filter(Boolean);
-
-    if (!images.length) return;
-
-    const container = document.querySelector(".profile-spotlight");
-    if (!container) return;
-
-    // get or create img
-    let img = container.querySelector(".profile-spotlight-backdrop");
-    if (!img) {
-      img = document.createElement("img");
-      img.className = "profile-spotlight-backdrop";
-
-      // 🔹 EXACT styles you asked for
-      img.style.width = "100%";
-      img.style.height = "80vh";
-      img.style.objectFit = "cover";
-      img.style.aspectRatio = "16 / 9";
-
-      container.appendChild(img);
-    }
-
-    let index = 0;
-
-    function changeImage() {
-      // restart animation if any
-      img.classList.remove("zoom-effect");
-      void img.offsetWidth;
-
-      img.src = IMAGE_BASE + images[index];
-      img.classList.add("zoom-effect");
-
-      index = (index + 1) % images.length;
-    }
-
-    changeImage();
-    setInterval(changeImage, 4000);
-
-  } catch (err) {
-    console.error("Spotlight error:", err);
-  }
-})();
-</script>
-
-
-
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S1XCS01T14"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-S1XCS01T14');
-</script>
-
+	
 
   <!-- Firebase SDKs -->
     <script type="module">
@@ -238,52 +199,16 @@ document.addEventListener('click', (event) => {
     history.pushState({ genre }, "", path);
   });
 });
-
-
-
-
-
-    </script>
-	
-  <!-- SEO Meta Tags -->
-  <title>WatchOut - Explore Movies, TV Shows, Animes & Dramas Online</title>
-  <meta name="description" content="WatchOut - Explore Movies, TV Shows, Animes, and Dramas online" />
-  <meta name="keywords" content="WatchOut, Explore movies, TV shows online, anime , drama series, OTT platform" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://watchout.fun/" />
-
-  <!-- Favicon & Icons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/watchout-favicon.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/watchout-favicon.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/watchout-favicon.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/icons/watchout-favicon.png" />
-  <link rel="shortcut icon" href="/icons/watchout-favicon.png" type="image/png" />
-
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet" />
-
-  <!-- Open Graph Tags (for Facebook, WhatsApp, etc.) -->
-  <meta property="og:title" content="WatchOut - Explore Movies, TV Shows, Animes & Dramas Online" />
-  <meta property="og:image" content="/icons/watchout-favicon.png" />
-  <meta property="og:description" content="Explore your favorite movies, TV shows, anime, and dramas without signups on WatchOut." />
-  
-  <meta property="og:url" content="https://watchout.fun/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="WatchOut" />
-
-  <!-- Twitter Card Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="WatchOut, Explore movies, TV shows online, anime , drama series, OTT platform" />
-  <meta name="twitter:description" content="Explore your favorite movies, TV shows, anime, and dramas without signups on WatchOut." />
-  <meta name="twitter:image" content="/icons/watchout-favicon.png" />
-  <meta name="twitter:site" content="@watchout_in" />
-
-  <!-- Language -->
-  <meta http-equiv="Content-Language" content="en" />
-
+</script>
   
 <!-- Add your custom styles here -->
 <style>
+	@media (max-width:768px){
+  #header-logo-img{
+	height: 40px !important;
+    content: url('/icons/header-logo-mobile.png');
+  }
+}
 	.provider-button,#play-provider{
 		display:none !important;
 	}
@@ -968,7 +893,7 @@ body{font-family: var(--netflix-font-stack);-webkit-font-smoothing:antialiased;-
   
   /* Header styles */
         .header {
-            height: 60px;
+            height: 68px;
             background: transparent;
             top: 0;
             left: 0;
@@ -988,7 +913,6 @@ body{font-family: var(--netflix-font-stack);-webkit-font-smoothing:antialiased;-
 
         .header-title {
             color: #ffffff;
-            padding-left: 10px;
             font-weight: 800;
             font-size: 1.3rem; /* text-lg */
             white-space: nowrap; /* Prevent text wrapping */
@@ -2137,6 +2061,7 @@ h4{font-size:21px;line-height:26px}
 }
 /* Profile Screen CSS */
       .profile-screen {
+	display:none !important;	  
     position: fixed;
 	margin-top:155px;
     background-color: transparent;
@@ -2283,7 +2208,7 @@ h4{font-size:21px;line-height:26px}
 </head>
 
 <body>
-	<div class="profile-screen-wrapper" style="background-color: rgb(20, 20, 20);z-index:99999;position:fixed;width:100vw;height:100vh;">
+	<div class="profile-screen-wrapper" style="display:none; background-color: rgb(20, 20, 20);z-index:99999;position:fixed;width:100vw;height:100vh;">
 	<div class="profile-spotlight" style="animation: fade-in 500ms ease 200ms 1 forwards;">
 	
 	</div>	
@@ -2296,7 +2221,7 @@ h4{font-size:21px;line-height:26px}
 <div class="select_users_wrapper">
   <div class="select_users">
     <div class="user-one users-text userIt-hv">
-      <a href="https://netout.netlify.app" class="user-one users-img">
+      <a class="user-one users-img">
         <img src="https://occ-0-4345-3647.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABZumJ3wvSKM7od-r3UjhVF9j3yteWlQYA-51F3SNoI682llhul1Xf_CUkMnfP_17Md2lpOOhbwHeGufvo8kOTjptoS_bcwtniHKz.png?r=e6e" alt="user icon">
         <p>Person 1</p>
       </a>
@@ -2354,8 +2279,8 @@ h4{font-size:21px;line-height:26px}
         <header class="header">
           <div class="header-left" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 4%;" bis_skin_checked="1">
                 <!-- Updated Netflix Logo - inline style removed, CSS class handles height -->
-                <a href="https://watchout.fun/" style="display: flex;align-items: flex-start;">
-					<img id="header-logo-img" src="/icons/header-logo.png" style="height: 30px;margin-right: 5px;">
+                <a href="/" style="display: flex;align-items: flex-start;">
+					<img id="header-logo-img" src="/icons/header-logo.png" style="height: 25px;">
                 </a>
                 <span class="header-title" id="header-title"></span> <!-- Changed to empty text content -->
                 <nav id="header-nav-links" class="header-nav-links">
@@ -3276,6 +3201,9 @@ body{background: Black;}
 
     /* Styles for desktop (medium and larger screens) */
     @media (min-width: 900px) { 
+		.tmdb-modal{
+	transform: translateY(100%);
+		}
 		.previewModal-audioToggle{
     pointer-events: none;}
 		.widget-player{
@@ -3395,6 +3323,7 @@ body{background: Black;}
     @media (max-width: 900px) {  
 		.tmdb-modal{
 		background: #000 !important;
+		transform: translateX(100%);
 		}
 		.content-manageProfile{
 			display:none;
@@ -3505,7 +3434,6 @@ body{background: Black;}
             justify-content: center; /* Center content within the button */
             color: white;
             padding:0px !important;
-            border: 1px solid rgba(255, 255, 255, 0.4);
             width: 100% !important; /* Full width on mobile */
         }
     }
@@ -3554,8 +3482,9 @@ padding: 4%;
 
 .search-results-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    row-gap: 20px;
+    column-gap: 8px;
     padding: 20px 0;
 }
 
@@ -3640,8 +3569,6 @@ padding: 4%;
     }
     
     .search-results-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 15px;
         padding: 15px 0;
     }
     
@@ -3655,14 +3582,6 @@ padding: 4%;
     
     .search-info h2 {
         font-size: 1.5rem;
-    }
-}
-
-/* Tablet adjustments */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .search-results-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 20px;
     }
 }
 
@@ -3926,22 +3845,33 @@ function displayDesktopResults(results, searchTerm) {
 
         const itemDiv = document.createElement('div');
         itemDiv.className = 'search-result-item';
-        
-        const posterSrc =
-    type === 'live'
-        ? (item.logo || 'https://via.placeholder.com/200x300?text=LIVE')
-        : type === 'track'
-        ? (item.image || 'https://via.placeholder.com/200x300?text=MUSIC')
-        : (item.poster_path ? imgBase + item.poster_path : 'https://via.placeholder.com/200x300?text=No+Image');
 
+        const posterSrc =
+            type === 'live'
+                ? (item.logo || 'https://via.placeholder.com/200x300?text=LIVE')
+                : type === 'track'
+                ? (item.image || 'https://via.placeholder.com/200x300?text=MUSIC')
+                : (item.poster_path ? imgBase + item.poster_path : 'https://via.placeholder.com/200x300?text=No+Image');
 
         itemDiv.innerHTML = `
-            <div class="result-poster" style="position:relative;">
-                <img src="${posterSrc}" alt="${title}" loading="lazy" style="${type === 'live' ? 'object-fit: contain; background: #000; padding: 10px;' : ''}">
-                ${type === 'live' ? '<div style="position:absolute; bottom:10px; left:10px; background:red; color:white; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">LIVE CHANNEL</div>' : ''}
+            <div class="result-poster" style="position:relative; aspect-ratio:16/9;">
+                <img src="${posterSrc}" alt="${title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;${type === 'live' ? 'object-fit:contain;background:#000;padding:10px;' : ''}">
+                ${type === 'live' ? '<div style="position:absolute;bottom:10px;left:10px;background:red;color:white;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:bold;">LIVE CHANNEL</div>' : ''}
             </div>
         `;
-        
+
+        if (type === 'movie' || type === 'tv') {
+            const img = itemDiv.querySelector('img');
+            fetch(`${workerUrl}/${type}/${item.id}/images?include_image_language=en`)
+                .then(r => r.ok ? r.json() : null)
+                .then(data => {
+                    if (data && data.backdrops && data.backdrops.length > 0) {
+                        img.src = 'https://image.tmdb.org/t/p/w780' + data.backdrops[0].file_path;
+                    }
+                })
+                .catch(() => {});
+        }
+
         itemDiv.onclick = () => {
             if (type === 'live') {
     openModal(item.id, 'channel');
@@ -4954,7 +4884,6 @@ z-index: 9999;
 inset: 0;
 overflow-y: auto;
 scrollbar-width: none;
-transform: translateY(100%); /* Start off-screen at the bottom */
 transition: transform 0.4s ease-out;
 }
 
@@ -7351,8 +7280,8 @@ function formatTitleForHls(title) {
     return title
         .toLowerCase()
         .replace(/&/g, 'and')
-        .replace(/[,!*'"()\[\]{}]/g, '')     // remove symbols & brackets
-        .replace(/[:/?\- ]/g, '.')           // convert separators (including ?) to dots
+        .replace(/[^a-z0-9\s]/g, '')         // strip ALL special characters
+        .replace(/\s+/g, '.')                 // spaces → dots
         .replace(/\.\.+/g, '.')              // collapse multiple dots
         .replace(/^\.+|\.+$/g, '');          // trim dots
 }
@@ -7581,6 +7510,7 @@ async function openModal(id, mediaType) {
     overlay.style.display ='block';
     modal.style.visibility ='visible';
     modal.style.transform ='translateY(0)';
+	if (window.innerWidth < 900) { modal.style.transform = 'translateX(0)'; }
     modal.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
@@ -9110,9 +9040,9 @@ try {
             let directHlsLink;
 
             // ✅ If fileId ends with m3u8, use it directly
-            if (fileId.endsWith(".m3u8") || fileId.endsWith(".txt")) {
+            if (fileId.endsWith(".m3u8")) {
                 directHlsLink = fileId;
-				episodeUrl = `https://watchout-player.netlify.app/?url=${encodeURIComponent(`https://hlsproxy.bingeoutofficial.workers.dev/proxy/${directHlsLink}`)}`;
+				episodeUrl = `https://watchout-player.netlify.app/?url=${encodeURIComponent(directHlsLink)}`;
             } else {
 				episodeUrl = fileId;
             }
@@ -9264,8 +9194,16 @@ function closeModal() {
   
     playerWrap.innerHTML = ``;
 	channelSection.innerHTML = ``;
-    if (modal.style.transform !== 'translateY(100%)') {
-       modal.style.transform = 'translateY(100%)';
+    const isMobile = window.innerWidth < 900;
+
+    if (isMobile) {
+      if (modal.style.transform !== 'translateX(100%)') {
+        modal.style.transform = 'translateX(100%)';
+      }
+    } else {
+      if (modal.style.transform !== 'translateY(100%)') {
+        modal.style.transform = 'translateY(100%)';
+      }
     }
     overlay.style.display = 'none';
     document.body.style.overflow = '';
@@ -9792,7 +9730,7 @@ function injectJSONLD(data, type = 'movie') {
 <style>
   /* Netflix-like styling with unique classes for Japanese anime, no card titles, no body CSS */
   .ja-container {
-    padding-bottom: 30px;
+    padding-bottom: 100px;
   }
   .ja-title {
     font-size: 20px;
@@ -9962,45 +9900,8 @@ function injectJSONLD(data, type = 'movie') {
 }
   
 </style>
-
-<a class="telegram-banner" href="https://t.me/WatchOut_fun" target="_blank">
-  <img src="https://w7.pngwing.com/pngs/979/991/png-transparent-telegram-flat-black-icon-social-media-flat-black-icon-thumbnail.png" alt="Telegram" />
-  <div class="telegram-info">
-    <div class="telegram-title">Join Our Telegram Group</div>
-    <div class="telegram-description">Get the latest updates, movies, and series directly.</div>
-  </div>
-</a>  
   
 <!------------------------------------------------------------------------- Footer-------------------------------------------------------------------------------------------->
-<!------------------------------------------------------------------------- Footer-------------------------------------------------------------------------------------------->
-<!------------------------------------------------------------------------- Footer-------------------------------------------------------------------------------------------->
-  
-<footer class="border-t border-[#1a2a35] h-12">
-    <div class="max-w-screen-xl mx-auto px-4 h-full flex items-center space-x-2">
-      <img
-        src="/icons/indra-group-logo.png"
-        alt="Indra Group logo"
-        class="h-4 w-auto"
-      />
-      <span class="text-[#6b7a8a] text-xs">© Watch Out, LLC</span>
-    </div>
-	<a href="https://watchout.fun/download" target="_blank">
-       <img src="/icons/downloadapk.png" 
-       style="height: 30px; border-radius: 4px; border: white 1px solid;">
-    </a>
-
-    <div class="bottom-disclaimer" data-v-3feaf96d="" bis_skin_checked="1" style="
-    color: #fff;
-    font-size: 11px;
-"> © 2025 WatchOut - All external content remains the property of the rightful owner. <span data-v-3feaf96d="" style="color: var(--ion-color-secondary);">(3.13.0)</span>
-    </div>
-  </footer>
-
-
-
-
-
-
 
 <!-- Navigation Bar Code -->
 <style>
@@ -10310,6 +10211,7 @@ window.addEventListener('popstate', (event) => {
     function showSection(sectionId) {
         const homeSection = document.getElementById('home-section');
         const newHotSection = document.getElementById('new-hot-section');
+		const liveSection = document.getElementById('live-section');
         const myNetflixSection = document.getElementById('my-netflix-section');
 
         const homeNav = document.getElementById('home-nav');
@@ -10339,7 +10241,9 @@ window.addEventListener('popstate', (event) => {
         // Show specific section
         switch (sectionId) {
             case 'home':
+				headerTitle.textContent = 'Home';
                 homeSection.classList.remove('section-hidden');
+				liveSection.style.display = "none";
                 homeNav.classList.add('active');
 				document.getElementById("search-section").style.display = "none";
                 searchPage.classList.remove('is-visible');
