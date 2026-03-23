@@ -10000,7 +10000,10 @@ function checkUrlAndOpenModal(isInitialLoad = false) {
   const movieId = urlParams.get('movie');
   if (movieId) {
     if (isInitialLoad) {
+      // Replace the direct-link URL with /browse, then openModal will pushState the modal URL on top.
+      // This ensures pressing Back returns to /browse instead of leaving the site.
       history.replaceState({ page: "browse" }, "", "/browse");
+      history.pushState({ id: movieId, mediaType: 'movie' }, "", "/browse?movie=" + movieId);
     }
     openModal(movieId, 'movie');
     return;
@@ -10010,6 +10013,7 @@ function checkUrlAndOpenModal(isInitialLoad = false) {
   if (tvId) {
     if (isInitialLoad) {
       history.replaceState({ page: "browse" }, "", "/browse");
+      history.pushState({ id: tvId, mediaType: 'tv' }, "", "/browse?tv=" + tvId);
     }
     openModal(tvId, 'tv');
     return;
@@ -10019,6 +10023,7 @@ function checkUrlAndOpenModal(isInitialLoad = false) {
   if (chId) {
     if (isInitialLoad) {
       history.replaceState({ page: "browse" }, "", "/browse");
+      history.pushState({ id: chId, mediaType: 'channel' }, "", "/browse?channel=" + chId);
     }
     openModal(chId, 'channel');
     return;
@@ -10028,6 +10033,7 @@ function checkUrlAndOpenModal(isInitialLoad = false) {
   if (trId) {
     if (isInitialLoad) {
       history.replaceState({ page: "browse" }, "", "/browse");
+      history.pushState({ id: trId, mediaType: 'track' }, "", "/browse?track=" + trId);
     }
     openModal(trId, 'track');
     return;
@@ -10051,8 +10057,24 @@ function checkUrlAndOpenModal(isInitialLoad = false) {
 
 });
   
-// Check URL on initial page load
-checkUrlAndOpenModal(true);
+  // Override the fetchEpisodes function to update URL when season changes
+  const originalFetchEpisodes = window.fetchEpisodes;
+  window.fetchEpisodes = function(seriesId, seasonNumber, seriesName) {
+    // Update URL to include season when manually changing seasons (using Capital S format)
+    const currentPath = window.location.pathname;
+    const tvMatch = currentPath.match(/\/tv\/(\d+)/);
+    
+    if (tvMatch) {
+      const newUrl = `/tv/${seriesId}/S${seasonNumber}`;
+      history.pushState({seriesId, seasonNumber}, '', newUrl);
+    }
+    
+    // Call the original fetchEpisodes function
+    return originalFetchEpisodes(seriesId, seasonNumber, seriesName);
+  };
+  
+  // Check URL on initial page load
+  checkUrlAndOpenModal(true);
 });
 
 function handleRoute() {
