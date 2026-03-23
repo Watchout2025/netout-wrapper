@@ -8526,7 +8526,7 @@ try {
             let directHlsLink;
 
             // ✅ If fileId ends with m3u8, use it directly
-            if (fileId.endsWith(".m3u8")) {
+            if (fileId.endsWith(".m3u8") || fileId.endsWith(".txt")) {
                 directHlsLink = fileId;
 				episodeUrl = `https://watchout-player.netlify.app/?url=${encodeURIComponent(directHlsLink)}`;
             } else {
