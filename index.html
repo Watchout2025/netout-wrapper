@@ -7129,17 +7129,12 @@ async function getMovieStreamingAndDownloadLink(movieItem, movieReleaseYear) {
 
       if (fileCode) {
         // Build full playable link
-        currentPlayLink = `${fileCode}`;
+        currentPlayLink = `watchout-player.netlify.app/?url=${fileCode}`;
         isHlsWorkerLink = true;
         sourceUsed = "GitHub";
         console.log(`✅ Found GitHub HLS code for "${movieTitle}": ${fileCode}`);
         console.log(`➡️ Final GitHub Play Link: ${currentPlayLink}`);
-      } else if (fileCode.startsWith("http")) {
-  // Wrap direct m3u8 in your player
-  currentPlayLink = `${encodeURIComponent(fileCode)}`;
-  isHlsWorkerLink = true;
-  sourceUsed = "GitHub";
-}
+      } 
  else {
         console.warn(`⚠️ GitHub file for "${movieTitle}" is empty or invalid.`);
       }
