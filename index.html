@@ -10041,7 +10041,7 @@ function checkUrlAndOpenModal(isInitialLoad = false) {
     checkUrlAndOpenModal();
   } else {
     // If no params → close and clean modal
-    closeModal(); // pass true so it doesn't trigger history.back()
+    closeModal();
   }
 
 });
@@ -10071,11 +10071,18 @@ function handleRoute() {
     console.warn(`No handler found for: ${path}`);
   }
 }
+	
 function navigateTo(path) {
-  // Only push if it's not already the same path
-  if (location.pathname.toLowerCase() !== path.toLowerCase()) {
-    history.pushState({}, "", path);
-  }
+    // Close modal if navigating away from a detail view
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('movie') && !params.has('tv') && !params.has('channel')) {
+        closeModal();
+    }
+
+    // Only push if it's not already the same path
+    if (location.pathname.toLowerCase() !== path.toLowerCase()) {
+        history.pushState({}, "", path);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", handleRoute);
