@@ -3729,18 +3729,6 @@ function displayDesktopResults(results, searchTerm) {
             </div>
         `;
 
-        if (type === 'movie' || type === 'tv') {
-            const img = itemDiv.querySelector('img');
-            fetch(`${workerUrl}/${type}/${item.id}/images?include_image_language=en`)
-                .then(r => r.ok ? r.json() : null)
-                .then(data => {
-                    if (data && data.backdrops && data.backdrops.length > 0) {
-                        img.src = 'https://image.tmdb.org/t/p/w780' + data.backdrops[0].file_path;
-                    }
-                })
-                .catch(() => {});
-        }
-
         itemDiv.onclick = () => {
             if (type === 'live') {
     openModal(item.id, 'channel');
