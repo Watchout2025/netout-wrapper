@@ -8525,7 +8525,7 @@ try {
     // -------------------------------------
     if (!episodeUrl && seriesId !== undefined) {
         episodeUrl = `https://player.videasy.net/tv/${seriesId}/${seasonNumber}/${episodeNumber}`;
-        isHlsWorkerLink = true;
+        isHlsWorkerLink = false;
         console.log(`⚠️ Using fallback Videasy link for TMDB ID ${seriesId} S${seasonNumber}E${episodeNumber}: ${episodeUrl}`);
     }
 
@@ -8542,10 +8542,12 @@ try {
          // Mobile → put iframe inside playerWrap
          playerWrap.innerHTML = `
            <iframe ${iframeAttributes}></iframe>
-           <a class="player-close" onclick="history.back()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="XStandard" aria-hidden="true">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
-
-</svg></a>
+           ${!isHlsWorkerLink ? `
+            <a class="player-close" onclick="playerClose()">
+                <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="30" height="30" data-icon="ArrowLeftMedium" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" role="img">
+                    <path fill="#FFFFFF" fill-rule="evenodd" d="M6.414 11H21v2H6.414l5.293 5.293-1.414 1.414-7-7a1 1 0 0 1 0-1.414l7-7 1.414 1.414z" clip-rule="evenodd"></path>
+                </svg>
+            </a>` : ''}
          `;
        } else {
          // Desktop → put iframe inside iframe-holder
@@ -8553,7 +8555,12 @@ try {
          if (iframeHolder) {
            iframeHolder.innerHTML = `
              <iframe ${iframeAttributes}></iframe>
-             <a class="player-close" onclick="playerClose()"><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="30" height="30" data-icon="ArrowLeftMedium" data-icon-id=":r0:" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" role="img"><path fill="#FFFFFF" fill-rule="evenodd" d="M6.414 11H21v2H6.414l5.293 5.293-1.414 1.414-7-7a1 1 0 0 1 0-1.414l7-7 1.414 1.414z" clip-rule="evenodd"></path></svg></a>
+             ${!isHlsWorkerLink ? `
+        <a class="player-close" onclick="history.back()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="XStandard" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
+            </svg>
+        </a>` : ''}
     <button id="next-button" class="next-button" onclick="playEpisode('${seriesName}', ${seasonNumber}, ${episodeNumber + 1}, '${seriesId}', '${uniqueEpisodeId}', '${releaseYear}')">
     ▶ Next Episode
     </button>
