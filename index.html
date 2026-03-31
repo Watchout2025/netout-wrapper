@@ -2503,9 +2503,11 @@ h4{font-size:21px;line-height:26px}
 
             <div class="cw-container" id="cw-container">
               <h2>Continue Watching</h2>
-              <button class="scroll-button left" onclick="scrollLeftHandler('cw-carousel')">❮</button>
-              <div class="cw-carousel" id="cw-carousel"></div>
-              <button class="scroll-button right" onclick="scrollRightHandler('cw-carousel')">❯</button>
+              <div id="cw-wrapper" style="position:relative;">
+                <button class="scroll-button left" onclick="scrollLeftHandler('cw-carousel')">❮</button>
+                <div class="cw-carousel" id="cw-carousel"></div>
+                <button class="scroll-button right" onclick="scrollRightHandler('cw-carousel')">❯</button>
+              </div>
             </div>
 
 
