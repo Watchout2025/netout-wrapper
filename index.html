@@ -8416,6 +8416,7 @@ function toggleFullscreen(element) {
 }
 
 async function playEpisode(seriesName, seasonNumber, episodeNumber, seriesId, uniqueEpisodeId, releaseYear) {
+	history.pushState({}, "", `/watch/${seriesId}/${seasonNumber}/${episodeNumber}/`);
     const container = document.getElementById('modal-backdrop-container');
     const isDesktop = window.innerWidth > 750;
     const playerWrap = document.getElementById('playerWrap');
