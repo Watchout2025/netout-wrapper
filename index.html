@@ -2517,9 +2517,11 @@ h4{font-size:21px;line-height:26px}
 <!-- TMDB Trending Movies Widget -->
 <div id="trending-widget" class="cards-section">
   <h2>Trending Movies</h2>
-  <button class="scroll-button left" onclick="scrollLeftHandler('trending-movies')">❮</button>
-  <div class="cards-container" id="trending-movies"></div>
-  <button class="scroll-button right" onclick="scrollRightHandler('trending-movies')">❯</button>
+  <div id="trending-widget-Wrapper" style="position:relative;">
+    <button class="scroll-button left" onclick="scrollLeftHandler('trending-movies')">❮</button>
+    <div class="cards-container" id="trending-movies"></div>
+    <button class="scroll-button right" onclick="scrollRightHandler('trending-movies')">❯</button>
+  </div>
 </div>
 
 <section id="section1"class="cards-section">
@@ -2534,9 +2536,11 @@ h4{font-size:21px;line-height:26px}
 <!-- TMDB Trending TV Shows Widget -->
 <div id="trending-tv-widget" class="cards-section">
   <h2>Trending TV Shows</h2>
-  <button class="scroll-button left" onclick="scrollLeftHandler('trending-tv-shows')">❮</button>
-  <div class="cards-container" id="trending-tv-shows"></div>
-  <button class="scroll-button right" onclick="scrollRightHandler('trending-tv-shows')">❯</button>
+  <div id="trending-tv-widget-Wrapper" style="position:relative;">
+    <button class="scroll-button left" onclick="scrollLeftHandler('trending-tv-shows')">❮</button>
+    <div class="cards-container" id="trending-tv-shows"></div>
+    <button class="scroll-button right" onclick="scrollRightHandler('trending-tv-shows')">❯</button>
+  </div>
 </div>
               
 <section id="section3"class="cards-section">
