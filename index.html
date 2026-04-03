@@ -8094,10 +8094,10 @@ if (item.recommendations && item.recommendations.results && item.recommendations
                 const { playLink, isHlsWorkerLink, source } = await getMovieStreamingAndDownloadLink(item, releaseYear);
 
                 const playerUrl = playLink;
-                let iframeAttributes = `id="movie-player-iframe" src="${playerUrl}" width="100%" height="100%" frameborder="0" allowfullscreen style="aspect-ratio: 16/9;"`;
+                let iframeAttributes = `id="movie-player-iframe" src="${playerUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
 
                 if (isHlsWorkerLink) {
-                    iframeAttributes = `id="movie-player-iframe" src="${playerUrl}" width="100%" height="100%" frameborder="0" allowfullscreen style="aspect-ratio: 16/9;"`;
+                    iframeAttributes = `id="movie-player-iframe" src="${playerUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
                 }
 
                 const iframeHolder = document.getElementById('iframe-holder');
@@ -8556,10 +8556,10 @@ async function playEpisode(seriesName, seasonNumber, episodeNumber, seriesId, un
 
     if (episodeUrl) {
         modal.dataset.currentBackdrop = document.getElementById('modal-backdrop')?.src || '';
-        let iframeAttributes = `id="movie-player-iframe" src="${episodeUrl}" width="100%" height="100%" frameborder="0" allowfullscreen style="aspect-ratio: 16/9;"`;
+        let iframeAttributes = `id="movie-player-iframe" src="${episodeUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
 
         if (isHlsWorkerLink) {
-            iframeAttributes = `id="movie-player-iframe" src="${episodeUrl}" width="100%" height="100%" frameborder="0" allowfullscreen style="aspect-ratio: 16/9;"`;
+            iframeAttributes = `id="movie-player-iframe" src="${episodeUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
         }
 
         if (!isDesktop) {
