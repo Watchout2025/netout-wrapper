@@ -4755,15 +4755,6 @@ overflow-y: hidden;
 }
   
 @media (max-width: 1000px) {
-        .iframe-holder {
-            transform: rotate(90deg);
-            transform-origin: center;
-            width: 100vh;
-            height: 100vw;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(90deg);
-        }
   .modal-close{
     display: none;
   }
@@ -8071,19 +8062,17 @@ if (item.recommendations && item.recommendations.results && item.recommendations
 				    // show backdrop container
 				    document.getElementById('modal-backdrop-container').classList.remove("hidden");
 	
+                // Show spinner while fetching source
                 if (!isDesktop) {
-                    // Mobile → put spinner in playerWrap
                     playerWrap.innerHTML = spinnerHTML;
-                    playBtn.style.display ="none";
+                    playBtn.style.display = "none";
                 } else {
-                    // Desktop → put spinner in iframe-holder
-                    const iframeHolder = document.getElementById("iframe-holder");
-                    iframeHolder.style.display ="Block";
-                    if (iframeHolder) {
-                        iframeHolder.innerHTML = spinnerHTML;
-                    } else {
-                        console.error("iframe-holder element not found in the DOM");
+                    const iframeHolderSpinner = document.getElementById("iframe-holder");
+                    if (iframeHolderSpinner) {
+                        iframeHolderSpinner.style.display = "block";
+                        iframeHolderSpinner.innerHTML = spinnerHTML;
                     }
+                    playBtn.style.display = "none";
                 }
 
                 e.preventDefault();
@@ -8094,52 +8083,39 @@ if (item.recommendations && item.recommendations.results && item.recommendations
                 const { playLink, isHlsWorkerLink, source } = await getMovieStreamingAndDownloadLink(item, releaseYear);
 
                 const playerUrl = playLink;
-                let iframeAttributes = `id="movie-player-iframe" src="${playerUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
-
-                if (isHlsWorkerLink) {
-                    iframeAttributes = `id="movie-player-iframe" src="${playerUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
-                }
+                const iframeAttributes = `id="movie-player-iframe" src="${playerUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
 
                 const iframeHolder = document.getElementById('iframe-holder');
-                if (!isDesktop) {
-                   // Mobile → put iframe inside playerWrap
-                   playerWrap.innerHTML = `
+
+                if (source === "github" || isDesktop) {
+                    // GitHub (watchout-player) on mobile → iframe-holder
+                    // All sources on desktop → iframe-holder
+                    if (iframeHolder) {
+                        iframeHolder.style.display = "block";
+                        iframeHolder.innerHTML = `
     <iframe ${iframeAttributes}></iframe>
-    ${source !== "github" ? `
-    <a class="player-close" onclick="history.back()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
-        </svg>
-    </a>
-    ` : ``}
-`;
-                   window.open("https://otieu.com/4/9119528", "_blank");
-               } else {
-                   // Desktop → put iframe inside iframe-holder
-                   const iframeHolder = document.getElementById("iframe-holder");
-                   if (iframeHolder) {
-                       iframeHolder.innerHTML = `
-    <iframe ${iframeAttributes}></iframe>
-    ${source !== "github" ? `
     <a class="player-close" onclick="playerClose()">
         <svg viewBox="0 0 24 24" width="24" height="24">
         <path fill="#FFFFFF" fill-rule="evenodd"
         d="M6.414 11H21v2H6.414l5.293 5.293-1.414 1.414-7-7a1 1 0 0 1 0-1.414l7-7 1.414 1.414z"></path>
         </svg>
     </a>
-    ` : ``}
 `;
-                   } else {
-                       console.error("iframe-holder element not found in the DOM");
-                       playerWrap.innerHTML = `
-                           <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: white; font-size: 1.2em;">
-                               Error: Player container not found.
-                           </div>
-                           <a class="modal-close" onclick="history.back()"></a>
-                       `;
-                   }
-                   window.open("https://otieu.com/4/9119528", "_blank");
+                    } else {
+                        console.error("iframe-holder element not found in the DOM");
+                    }
+                } else {
+                    // RPM / Videasy on mobile → playerWrap
+                    playerWrap.innerHTML = `
+    <iframe ${iframeAttributes}></iframe>
+    <a class="player-close" onclick="history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
+        </svg>
+    </a>
+`;
                 }
+                window.open("https://otieu.com/4/9119528", "_blank");
 
 
                 saveToContinueWatching(item.id, mediaType, item.poster_path, item.backdrop_path);
@@ -8442,35 +8418,23 @@ async function playEpisode(seriesName, seasonNumber, episodeNumber, seriesId, un
         container.classList.remove("hidden");
     }
     
+    // Spinner while fetching source
+    if (playBtn) playBtn.style.display = "none";
     if (!isDesktop) {
-      // Mobile
-      if (playBtn) {
-         playBtn.style.display = "none";
-         }
-      playerWrap.innerHTML = `
-        <div class="loading-spinner-container">
-          <img
-            src="https://assets.nflxext.com/en_us/pages/wiplayer/site-spinner.png"
-            alt="Loading..."
-            onerror="this.onerror=null; this.src='https://placehold.co/64x64/cccccc/333333?text=Loading';">
-        </div>
-        <a class="player-close" onclick="history.back()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="XStandard" aria-hidden="true">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
-
-</svg></a>
-      `;
+        playerWrap.innerHTML = `
+          <div class="loading-spinner-container">
+            <img src="https://assets.nflxext.com/en_us/pages/wiplayer/site-spinner.png" alt="Loading..."
+              onerror="this.onerror=null; this.src='https://placehold.co/64x64/cccccc/333333?text=Loading';">
+          </div>`;
     } else {
-      // Desktop
-      iframeHolder.style.display = "block";
-      iframeHolder.innerHTML = `
-        <div class="loading-spinner-container">
-          <img
-            src="https://assets.nflxext.com/en_us/pages/wiplayer/site-spinner.png"
-            alt="Loading..."
-            onerror="this.onerror=null; this.src='https://placehold.co/64x64/cccccc/333333?text=Loading';">
-        </div>
-        <a class="player-close" onclick="playerClose()"><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24" data-icon="ArrowLeftMedium" data-icon-id=":r0:" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" role="img"><path fill="#FFFFFF" fill-rule="evenodd" d="M6.414 11H21v2H6.414l5.293 5.293-1.414 1.414-7-7a1 1 0 0 1 0-1.414l7-7 1.414 1.414z" clip-rule="evenodd"></path></svg></a>
-      `;
+        iframeHolder.style.display = "block";
+        iframeHolder.innerHTML = `
+          <div class="loading-spinner-container">
+            <img src="https://assets.nflxext.com/en_us/pages/wiplayer/site-spinner.png" alt="Loading..."
+              onerror="this.onerror=null; this.src='https://placehold.co/64x64/cccccc/333333?text=Loading';">
+          </div>
+          <a class="player-close" onclick="playerClose()"><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" role="img"><path fill="#FFFFFF" fill-rule="evenodd" d="M6.414 11H21v2H6.414l5.293 5.293-1.414 1.414-7-7a1 1 0 0 1 0-1.414l7-7 1.414 1.414z" clip-rule="evenodd"></path></svg></a>
+        `;
     }
 
     let episodeUrl = null;
@@ -8556,64 +8520,37 @@ async function playEpisode(seriesName, seasonNumber, episodeNumber, seriesId, un
 
     if (episodeUrl) {
         modal.dataset.currentBackdrop = document.getElementById('modal-backdrop')?.src || '';
-        let iframeAttributes = `id="movie-player-iframe" src="${episodeUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
+        const iframeAttributes = `id="movie-player-iframe" src="${episodeUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
 
-        if (isHlsWorkerLink) {
-            iframeAttributes = `id="movie-player-iframe" src="${episodeUrl}" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="aspect-ratio: 16/9;"`;
+        if (isGitHubSource || isDesktop) {
+            // GitHub (watchout-player) on mobile → iframe-holder
+            // All sources on desktop → iframe-holder
+            const iframeHolder = document.getElementById("iframe-holder");
+            if (iframeHolder) {
+                let playerHTML = `<iframe ${iframeAttributes}></iframe>`;
+                playerHTML += `
+                  <a class="player-close" onclick="playerClose()"><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" role="img"><path fill="#FFFFFF" fill-rule="evenodd" d="M6.414 11H21v2H6.414l5.293 5.293-1.414 1.414-7-7a1 1 0 0 1 0-1.414l7-7 1.414 1.414z" clip-rule="evenodd"></path></svg></a>
+                `;
+                playerHTML += `
+                  <button id="next-button" class="next-button" onclick="playEpisode('${seriesName}', ${seasonNumber}, ${episodeNumber + 1}, '${seriesId}', '${uniqueEpisodeId}', '${releaseYear}')">
+                  ▶ Next Episode
+                  </button>
+                `;
+                iframeHolder.style.display = "block";
+                iframeHolder.innerHTML = playerHTML;
+            } else {
+                console.error("iframe-holder element not found in the DOM");
+            }
+        } else {
+            // RPM / Videasy on mobile → playerWrap
+            let mobileHTML = `<iframe ${iframeAttributes}></iframe>`;
+            mobileHTML += `
+              <a class="player-close" onclick="history.back()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
+              </svg></a>
+            `;
+            playerWrap.innerHTML = mobileHTML;
         }
-
-        if (!isDesktop) {
-         // Mobile → put iframe inside playerWrap
-         let mobileHTML = `
-           <iframe ${iframeAttributes}></iframe>
-         `;
-         
-         // Only add close button if NOT GitHub source
-         if (!isGitHubSource) {
-             mobileHTML += `
-               <a class="player-close" onclick="history.back()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="XStandard" aria-hidden="true">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
-
-</svg></a>
-             `;
-         }
-         
-         playerWrap.innerHTML = mobileHTML;
-       } else {
-         // Desktop → put iframe inside iframe-holder
-         const iframeHolder = document.getElementById("iframe-holder");
-         if (iframeHolder) {
-           let desktopHTML = `
-             <iframe ${iframeAttributes}></iframe>
-           `;
-           
-           // Only add close button if NOT GitHub source
-           if (!isGitHubSource) {
-               desktopHTML += `
-                 <a class="player-close" onclick="playerClose()"><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="30" height="30" data-icon="ArrowLeftMedium" data-icon-id=":r0:" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" role="img"><path fill="#FFFFFF" fill-rule="evenodd" d="M6.414 11H21v2H6.414l5.293 5.293-1.414 1.414-7-7a1 1 0 0 1 0-1.414l7-7 1.414 1.414z" clip-rule="evenodd"></path></svg></a>
-               `;
-           }
-           
-           desktopHTML += `
-             <button id="next-button" class="next-button" onclick="playEpisode('${seriesName}', ${seasonNumber}, ${episodeNumber + 1}, '${seriesId}', '${uniqueEpisodeId}', '${releaseYear}')">
-             ▶ Next Episode
-             </button>
-           `;
-           
-           iframeHolder.innerHTML = desktopHTML;
-         } else {
-          console.error("iframe-holder element not found in the DOM");
-           playerWrap.innerHTML = `
-             <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: white; font-size: 1.2em;">
-               Error: Player container not found.
-             </div>
-             <a class="modal-close" onclick="playerClose()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="XStandard" aria-hidden="true">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z" fill="currentColor"></path>
-
-</svg></a>
-           `;
-         }
-       }
 
         modal.scrollTop = 0;
         saveToContinueWatching(seriesId, 'tv', modal.dataset.posterPath, modal.dataset.backdropPath);
