@@ -48,6 +48,17 @@
 
   <!-- Firebase SDKs -->
     <script type="module">
+		async function requestPortrait() {
+  try {
+    // Some browsers require entering fullscreen before locking
+    await document.documentElement.requestFullscreen();
+    await screen.orientation.lock("portrait");
+  } catch (err) {
+    console.error("Orientation lock failed:", err);
+  }
+}
+		requestPortrait();
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
         
