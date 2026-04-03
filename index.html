@@ -207,7 +207,6 @@ document.addEventListener('click', (event) => {
         transform: translate(-50%, -50%) rotate(90deg);
         transform-origin: center;
         width: 100vh;
-		inset: unset !important;
         height: 100vw;
         top: 50%;
         left: 50%;
@@ -3126,6 +3125,11 @@ body{background: #141414;}
     width: 36%;
   }
 }
+@media (min-width: 500px) {
+      .iframe-holder {
+	inset: 0;
+  }
+}
 
     /* Styles for desktop (medium and larger screens) */
     @media (min-width: 900px) { 
@@ -4760,7 +4764,6 @@ transition: transform 0.4s ease-out;
  display: none;
 position: fixed;
 z-index: 999999;
-inset: 0;
 background: #000000;
 overflow-y: hidden;
 }
