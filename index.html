@@ -3950,7 +3950,8 @@ toggleBtn.addEventListener('click', () => {
     if (window.innerWidth <= 1000) {
         // Mobile / tablet
         searchPage.classList.add('is-visible');
-        searchInputBar.focus();
+		searchPage.style.display ='block';        
+		searchInputBar.focus();
 
         if (window.location.pathname !== '/search') {
             history.pushState({}, '', '/search');
@@ -7177,6 +7178,7 @@ async function getMovieStreamingAndDownloadLink(movieItem, movieReleaseYear) {
 
 // openModal Script
 async function openModal(id, mediaType) {
+	const searchPage = document.getElementById("search-page");
 	const headerTitle = document.getElementById("header-title");
 	const headerLogo = document.getElementById("headerLogo");
 	const backButton = document.getElementById("backButton");
@@ -7229,6 +7231,7 @@ async function openModal(id, mediaType) {
     }
   
     overlay.style.display ='block';
+	searchPage.style.display ='none';
 	iframeContainer.innerHTML= '';
 	iframeContainer.style.display = 'none';
     modal.style.visibility ='visible';
