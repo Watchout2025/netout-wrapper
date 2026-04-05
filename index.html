@@ -6930,19 +6930,24 @@ function displayProgressBar(targetElement, progress) {
 
 window.addEventListener('message', (event) => {
     // ⚠️ CRITICAL: In a production environment, always verify the origin.
-    // e.g., if (event.origin !== 'http://localhost:8000') return;
+    // e.g., if (event.origin !== 'https://your-player-domain.com') return;
 
     const data = event.data;
+    if (!data || data.event !== 'videoTimeUpdate') return;
 
-    // Check for the custom event identifier 'videoTimeUpdate'
-    if (data && data.event === 'videoTimeUpdate') {
-        console.log("Video Progress Update from iframe:");
-        console.log(`- Current Time: ${data.currentTime.toFixed(2)}s`);
-        console.log(`- Duration: ${data.duration.toFixed(2)}s`);
-        console.log(`- Paused: ${data.paused}`);
+    // Build uniqueContentId from the message itself — no need to track separately
+    let uniqueContentId;
+    if (data.mediaType === 'tv') {
+        uniqueContentId = `tv_${data.contentId}_${data.seasonNumber}_${data.episodeNumber}`;
+    } else if (data.mediaType === 'movie') {
+        uniqueContentId = `movie_${data.contentId}`;
+    } else {
+        return; // unknown mediaType, nothing to save
     }
-});
 
+    console.log(`[Progress] ${uniqueContentId} | ${data.currentTime.toFixed(2)}s / ${data.duration.toFixed(2)}s | paused: ${data.paused}`);
+    saveVideoProgress(uniqueContentId, data.currentTime, data.duration);
+});
 // Set up player message listener to track progress
 function setupPlayerListener(uniqueContentId) {
     const playerIframe = document.getElementById('movie-player-iframe');
