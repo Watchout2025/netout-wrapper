@@ -7168,6 +7168,7 @@ async function getMovieStreamingAndDownloadLink(movieItem, movieReleaseYear) {
 
 // openModal Script
 async function openModal(id, mediaType) {
+	const backButton = document.getElementById("backButton");
 	const badge = document.getElementById("top-10-badge");
 	const text = document.getElementById("top-10-text");
     const modal = document.getElementById('tmdb-modal');
@@ -7322,6 +7323,7 @@ fill="currentColor"></path>
     
     } else {
         // Mobile
+		backButton.style.display = 'block';
         document.querySelectorAll('.play-button2').forEach(btn => btn.remove());
         document.querySelectorAll('.myList2').forEach(btn => btn.remove());
         document.querySelectorAll('.previewModal-logo-con').forEach(btn => btn.remove());
