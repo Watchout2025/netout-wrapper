@@ -6971,8 +6971,14 @@ function setupPlayerListener(uniqueContentId) {
 
         // Handle time response
         if (event.data.currentTime !== undefined && event.data.duration !== undefined) {
-            saveVideoProgress(uniqueContentId, event.data.currentTime, event.data.duration);
-        }
+    console.log("Player Progress:", {
+        id: uniqueContentId,
+        currentTime: event.data.currentTime,
+        duration: event.data.duration
+    });
+
+    saveVideoProgress(uniqueContentId, event.data.currentTime, event.data.duration);
+}
     };
 
     if (window.currentMessageHandler) {
