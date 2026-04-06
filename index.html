@@ -3248,7 +3248,7 @@ body{background: #141414;}
 
     /* Styles for mobile screens smaller than desktop (mobile) */
     @media (max-width: 900px) {
-		#tmdb-search-wrapper{width:0px !important;
+		#tmdb-search-wrapper{width:32px !important;
 							}
 		.gms-gradient-overlay{
 			background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0) 100%);		}
@@ -9360,7 +9360,7 @@ function injectJSONLD(data, type = 'movie') {
         window.addEventListener('beforeinstallprompt', event => {
           event.preventDefault();
           const installDiv = document.getElementById('divInstallApp');
-          installDiv.innerHTML = '<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="Hawkins-Icon Hawkins-Button-icon Hawkins-Icon-Small" data-name="IconDownload" fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path clip-rule="evenodd" d="M8.75165 2V9.18868L10.4696 7.46981L11.5306 8.53019L8.53212 11.5302C8.3915 11.6709 8.20076 11.7499 8.00184 11.75C7.80293 11.7501 7.61215 11.6711 7.47146 11.5305L4.46991 8.53047L5.53029 7.46953L7.25165 9.19V2H8.75165ZM0.755816 14.5089C3.0651 14.2331 5.49409 14.0858 8.00151 14.0858C10.5089 14.0858 12.9379 14.2331 15.2472 14.5089L15.4251 13.0195C13.0557 12.7365 10.5673 12.5858 8.00151 12.5858C5.43574 12.5858 2.94731 12.7365 0.577881 13.0195L0.755816 14.5089Z" fill="#FFFFFF" fill-rule="evenodd" fill-opacity="0.9"></path></svg>';
+          installDiv.innerHTML = '<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="Hawkins-Icon Hawkins-Button-icon Hawkins-Icon-Small" data-name="IconDownload" fill="none" height="24" viewBox="0 0 16 16" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path clip-rule="evenodd" d="M8.75165 2V9.18868L10.4696 7.46981L11.5306 8.53019L8.53212 11.5302C8.3915 11.6709 8.20076 11.7499 8.00184 11.75C7.80293 11.7501 7.61215 11.6711 7.47146 11.5305L4.46991 8.53047L5.53029 7.46953L7.25165 9.19V2H8.75165ZM0.755816 14.5089C3.0651 14.2331 5.49409 14.0858 8.00151 14.0858C10.5089 14.0858 12.9379 14.2331 15.2472 14.5089L15.4251 13.0195C13.0557 12.7365 10.5673 12.5858 8.00151 12.5858C5.43574 12.5858 2.94731 12.7365 0.577881 13.0195L0.755816 14.5089Z" fill="#FFFFFF" fill-rule="evenodd" fill-opacity="0.9"></path></svg>';
           installDiv.addEventListener('click', () => {
             event.prompt();
             installDiv.innerHTML = "";
