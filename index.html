@@ -9347,6 +9347,21 @@ function injectJSONLD(data, type = 'movie') {
 	<div id="divInstallApp" style="border:1px solid white">
 		<span>Install</span>
     </div>
+	<script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/serviceworker.js", { scope: "/" });
+
+        window.addEventListener('beforeinstallprompt', event => {
+          event.preventDefault();
+          const installDiv = document.getElementById('divInstallApp');
+          installDiv.innerHTML = '<button id="installApp">Install App</button>';
+          installDiv.addEventListener('click', () => {
+            event.prompt();
+            installDiv.innerHTML = "";
+          });
+        });
+      }
+    </script>
 
     <div class="bottom-disclaimer" data-v-3feaf96d="" bis_skin_checked="1" style="
     color: #fff;
