@@ -20,4 +20,14 @@
     <lastmod>2026-04-08</lastmod>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://netout.netlify.app/live</loc>
+    <lastmod>2026-04-08</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://netout.netlify.app/my-list</loc>
+    <lastmod>2026-04-08</lastmod>
+    <priority>0.8</priority>
+  </url>
 </urlset>
