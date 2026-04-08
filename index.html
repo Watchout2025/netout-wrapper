@@ -10088,18 +10088,25 @@ function handleRoute() {
   document.querySelector('link[rel="canonical"]').setAttribute('href', window.location.href);
 
   if (path === "/movies") {
+	document.title = "Movies - NetOut";
     renderMovieSections();
   } else if (path === "/tv") {
+	document.title = "TV Shows - NetOut";
     renderTVSections();
   } else if (path === "/anime") {
+	document.title = "Anime - NetOut";
     renderAnimeSections();
   } else if (path === "/home") {
+	document.title = "NetOut - Watch Movies, TV Shows & More";
     renderHomeSections();
   }	else if (path === "/") {
+	document.title = "NetOut - Watch Movies, TV Shows & More";
     renderHomeSections();
   } else if (path === "/live") {
+	document.title = "Live - NetOut";
     renderLiveSections();
   } else if (path === "/my-list") {
+	document.title = "My List  - NetOut";
     renderMyListSections();
   } else {
     console.warn(`No handler found for: ${path}`);
