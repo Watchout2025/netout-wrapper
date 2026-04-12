@@ -6,7 +6,7 @@
   <meta charset="UTF-8" />
   <!-- SEO Meta Tags -->
   <title>NetOut - Watch Movies, TV Shows, Animes & Dramas Online</title>
-  <meta name="description" content="Netout movies & TV shows online or stream right to your smart TV, game console, PC, Mac, mobile, tablet and more." />
+  <meta name="description" content="Netout App movies & TV shows online or stream right to your smart TV, game console, PC, Mac, mobile, tablet and more." />
   <meta name="keywords" content="NetOut, Netout App, Net Out, Watch movies, TV shows online, anime , drama series, OTT platform" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="/" />
@@ -4552,34 +4552,6 @@ displayContinueWatching();
   }
 </style>
 
-<!-- ██ SHARED TRENDING CACHE - reduces all trending worker calls to 1 per session ██ -->
-<script>
-  const SHARED_PROXY = 'https://tmdb-proxy.idolupdates.workers.dev';
-  const SESSION_KEY  = 'trendingAllCache';
-
-  // Returns parsed trending/all/week data from sessionStorage or fetches once
-  async function getSharedTrendingAll() {
-    try {
-      const cached = sessionStorage.getItem(SESSION_KEY);
-      if (cached) return JSON.parse(cached);
-    } catch(e) {}
-
-    const res  = await fetch(`${SHARED_PROXY}/?url=trending/all/week`);
-    if (!res.ok) throw new Error('Trending fetch failed: ' + res.status);
-    const data = await res.json();
-    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(data)); } catch(e) {}
-    return data;
-  }
-
-  // Helpers to derive movie/tv subsets from the shared all/week response
-  function getTrendingMovies(data) {
-    return { results: (data.results || []).filter(i => i.media_type === 'movie') };
-  }
-  function getTrendingTV(data) {
-    return { results: (data.results || []).filter(i => i.media_type === 'tv') };
-  }
-</script>
-
 <script>
 	// --- Configuration and Constants ---
 	const top10Movies = {};
@@ -4603,17 +4575,21 @@ displayContinueWatching();
 
     // TMDB API details via a proxy to avoid CORS issues
     const PROXY_BASE = 'https://tmdb-proxy.idolupdates.workers.dev';
+    const TRENDING_API_URL = `${PROXY_BASE}/?url=trending/movie/week`;
     const DETAILS_API_URL = (id) => `${PROXY_BASE}/?url=movie/${id}`;
     
     // --- Helper Functions ---
     // --- Main Logic ---
     /**
-     * Fetches and displays trending movies — uses shared session cache (no extra worker hit).
+     * Fetches and displays trending movies from the TMDB API.
      */
     async function fetchTrendingMovies() {
         try {
-            const allData = await getSharedTrendingAll();
-            const data = getTrendingMovies(allData);
+            const res = await fetch(TRENDING_API_URL);
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await res.json();
             
             // Clear previous content
             TRENDING_CONTAINER.innerHTML = '';
@@ -4718,11 +4694,15 @@ displayContinueWatching();
 	const top10TV = {};
     const TRENDING_TV_CONTAINER = document.getElementById('trending-tv-shows');
     const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w300';
+    const PROXY_URL = 'https://tmdb-proxy.idolupdates.workers.dev/?url=trending/tv/week';
 
     async function fetchTrendingTVShows() {
         try {
-            const allData = await getSharedTrendingAll();
-            const data = getTrendingTV(allData);
+            const res = await fetch(PROXY_URL);
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await res.json();
             
             TRENDING_TV_CONTAINER.innerHTML = '';
 			// 🔥 Reset object before storing new ranks
@@ -5871,33 +5851,13 @@ let trendingCache = null;
 
 // --- API Configuration ---
 const PROXY_BASEURL = 'https://tmdb-proxy.idolupdates.workers.dev';
+// Fetch movies + TV shows
+const trendingResults = `${PROXY_BASEURL}/?url=trending/all/week`;
 
 /**
- * Fetches trending results — uses shared session cache (no extra worker hit).
+ * Renders the fetched movie/TV results into the search container.
+ * @param {Array<Object>} items - An array of movie/show objects.
  */
-async function fetchTrendingResults() {
-    resultsContainer.innerHTML = `<p style="color: #E50914; text-align: center; padding-top: 50px;">Loading trending data...</p>`;
-    try {
-        const data = await getSharedTrendingAll();
-        if (data && data.results) {
-            const items = data.results.slice(0, 12);
-            trendingCache = items;
-            renderResults(items);
-        } else {
-            throw new Error("Invalid data structure received.");
-        }
-    } catch (error) {
-        console.error("Error fetching trending data:", error);
-        resultsContainer.innerHTML = `
-            <p style="color: #ff3333; text-align: center; padding-top: 50px;">
-                Failed to load trending content.
-            </p>
-            <p style="color: #555; font-size: 0.8rem; text-align: center;">
-                Error: ${error.message}
-            </p>
-        `;
-    }
-}
 function renderResults(items) {
     let html = `<h2 style="color:#fff; margin-top:0.5rem; font-size: 18px;">Recommended Shows & Movies</h2>`;
 
@@ -5928,7 +5888,50 @@ function renderResults(items) {
 }
 
 
+/**
+ * Fetches trending results from the API with retry logic (Exponential Backoff).
+ */
+async function fetchTrendingResults() {
+    // Display loading state
+    resultsContainer.innerHTML = `<p style="color: #E50914; text-align: center; padding-top: 50px;">Loading trending data...</p>`;
+    
+    const maxRetries = 3;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
+            const response = await fetch(trendingResults);
+            if (!response.ok) {
+                if (response.status === 429 && attempt < maxRetries - 1) {
+                    const delay = Math.pow(2, attempt) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    continue;
+                }
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
 
+            const data = await response.json();
+            if (data && data.results) {
+    const items = data.results.slice(0, 12);
+    trendingCache = items;   // store results
+    renderResults(items);
+    return;
+} else {
+                throw new Error("Invalid data structure received.");
+            }
+        } catch (error) {
+            if (attempt === maxRetries - 1) {
+                console.error("Error fetching trending data after retries:", error);
+                resultsContainer.innerHTML = `
+                    <p style="color: #ff3333; text-align: center; padding-top: 50px;">
+                        Failed to load trending content.
+                    </p>
+                    <p style="color: #555; font-size: 0.8rem; text-align: center;">
+                        Error: ${error.message}
+                    </p>
+                `;
+            }
+        }
+    }
+}
 		
 searchInputBar.addEventListener("input", () => {
     const query = searchInputBar.value.trim();
@@ -6517,8 +6520,9 @@ function renderTVSections(genre) {
     const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
     const IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
     try {
-      const allData = await getSharedTrendingAll();
-      const top10 = getTrendingTV(allData).results.slice(0, 10).filter(item =>
+      const res  = await fetch(`${PROXY}/?url=trending/tv/week`);
+      const data = await res.json();
+      const top10 = (data.results || []).slice(0, 10).filter(item =>
         item.backdrop_path && item.overview
       );
       if (!top10.length) return;
@@ -6581,8 +6585,9 @@ function renderMovieSections(genre) {
     const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
     const IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
     try {
-      const allData = await getSharedTrendingAll();
-      const top10 = getTrendingMovies(allData).results.slice(0, 10).filter(item =>
+      const res  = await fetch(`${PROXY}/?url=trending/movie/week`);
+      const data = await res.json();
+      const top10 = (data.results || []).slice(0, 10).filter(item =>
         item.backdrop_path && item.overview
       );
       if (!top10.length) return;
@@ -6681,7 +6686,8 @@ function renderHomeSections() {
     const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
     const IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
     try {
-      const data = await getSharedTrendingAll();
+      const res  = await fetch(`${PROXY}/?url=trending/all/week`);
+      const data = await res.json();
       const top10 = (data.results || []).slice(0, 10).filter(item =>
         item.backdrop_path && item.overview
       );
