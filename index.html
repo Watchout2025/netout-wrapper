@@ -10155,7 +10155,8 @@ window.addEventListener("popstate", handleRoute);
       body: JSON.stringify({
         issueType: type,
         description: desc,
-        pageUrl: location.href
+        pageUrl: location.href,
+        pageTitle: document.title
       })
     });
 
