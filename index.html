@@ -3528,7 +3528,7 @@ padding: 4%;
 /* search script */
 let currentSearchController = null;
 const imgBase = 'https://image.tmdb.org/t/p/w300';
-const workerUrl = 'https://search-proxy.bingeoutofficial.workers.dev'; // No trailing slash
+//const workerUrl = 'https://search-proxy.bingeoutofficial.workers.dev'; // No trailing slash
 
 const toggleBtn = document.getElementById('tmdb-toggle-btn');
 const cancelBtn = document.getElementById('tmdb-cancel-btn');
@@ -4566,7 +4566,7 @@ displayContinueWatching();
     };
 
     // TMDB API details via a proxy to avoid CORS issues
-    const PROXY_BASE = 'https://tmdb-proxy.idolupdates.workers.dev';
+    //const PROXY_BASE = 'https://tmdb-proxy.idolupdates.workers.dev';
     const TRENDING_API_URL = `${PROXY_BASE}/?url=trending/movie/week`;
     const DETAILS_API_URL = (id) => `${PROXY_BASE}/?url=movie/${id}`;
     
@@ -4686,7 +4686,7 @@ displayContinueWatching();
 	const top10TV = {};
     const TRENDING_TV_CONTAINER = document.getElementById('trending-tv-shows');
     const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w300';
-    const PROXY_URL = 'https://tmdb-proxy.idolupdates.workers.dev/?url=trending/tv/week';
+    //const PROXY_URL = 'https://tmdb-proxy.idolupdates.workers.dev/?url=trending/tv/week';
 
     async function fetchTrendingTVShows() {
         try {
@@ -5842,7 +5842,7 @@ const searchInputBar = document.getElementById('search-input');
 let trendingCache = null;
 
 // --- API Configuration ---
-const PROXY_BASEURL = 'https://tmdb-proxy.idolupdates.workers.dev';
+//const PROXY_BASEURL = 'https://tmdb-proxy.idolupdates.workers.dev';
 // Fetch movies + TV shows
 const trendingResults = `${PROXY_BASEURL}/?url=trending/all/week`;
 
@@ -6509,7 +6509,7 @@ function renderTVSections(genre) {
 
   // ── Random top-10 trending TV spotlight ──
   (async () => {
-    const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
+    //const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
     const IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
     try {
       const res  = await fetch(`${PROXY}/?url=trending/tv/week`);
@@ -6574,7 +6574,7 @@ function renderMovieSections(genre) {
 
   // ── Random top-10 trending Movies spotlight ──
   (async () => {
-    const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
+    //const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
     const IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
     try {
       const res  = await fetch(`${PROXY}/?url=trending/movie/week`);
@@ -6675,7 +6675,7 @@ function renderHomeSections() {
 
   // ── Random top-10 trending (all/week) spotlight ──
   (async () => {
-    const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
+    //const PROXY      = 'https://tmdb-proxy.idolupdates.workers.dev';
     const IMAGE_BASE = 'https://image.tmdb.org/t/p/original';
     try {
       const res  = await fetch(`${PROXY}/?url=trending/all/week`);
@@ -6839,9 +6839,9 @@ const API_KEY = '';
 const IMAGE_BASE = 'https://image.tmdb.org/t/p/';
 const POSTER_SIZE = 'w300';
 const BACKDROP_SIZE = 'original';
-const MAIN_WORKER_BASE_URL = 'https://modaldata-worker.sung-jinwoo.workers.dev/';
-const HLS_WORKER_BASE_URL = 'https://earnvids-proxy.watchoutofficial2006.workers.dev/';
-const RPM_WORKER_BASE_URL = 'https://hlsworker.infinitynews2021.workers.dev/';
+//const MAIN_WORKER_BASE_URL = 'https://modaldata-worker.sung-jinwoo.workers.dev/';
+//const HLS_WORKER_BASE_URL = 'https://earnvids-proxy.watchoutofficial2006.workers.dev/';
+//const RPM_WORKER_BASE_URL = 'https://hlsworker.infinitynews2021.workers.dev/';
 
 // Helper function to save to Continue Watching in localStorage
 function saveToContinueWatching(id, mediaType, posterPath, backdropPath) {
@@ -7427,7 +7427,7 @@ fill="currentColor"></path>
             modalSection.style.display = 'none';
             channelSection.style.display = 'none';
 		    document.getElementById('actor-section').style.display = "block";
-		    const actorProxy = "https://modaldata-worker.sung-jinwoo.workers.dev/?url=";
+		    //const actorProxy = "https://modaldata-worker.sung-jinwoo.workers.dev/?url=";
             const gridElement = document.getElementById('filmography-grid');
             const titleElement = document.getElementById('actor-title-display');
             
@@ -8986,7 +8986,7 @@ function injectJSONLD(data, type = 'movie') {
   document.addEventListener('DOMContentLoaded', () => {
 
     // API endpoint
-    const tmdbApiEndpoint = 'https://search-proxy.bingeoutofficial.workers.dev/discover/tv?language=en-US&with_original_language=ko&sort_by=popularity.desc&first_air_date.gte=2020-01-01&first_air_date.lte=2025-11-18&with_genres=18';
+    //const tmdbApiEndpoint = 'https://search-proxy.bingeoutofficial.workers.dev/discover/tv?language=en-US&with_original_language=ko&sort_by=popularity.desc&first_air_date.gte=2020-01-01&first_air_date.lte=2025-11-18&with_genres=18';
 
     // Fetch TV shows
     const fetchTVShows = async () => {
@@ -9100,7 +9100,7 @@ function injectJSONLD(data, type = 'movie') {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     // API endpoint
-    const tmdbApiEndpoint = 'https://search-proxy.bingeoutofficial.workers.dev/discover/tv?language=en-US&with_original_language=zh&sort_by=popularity.desc&first_air_date.gte=2020-01-01&first_air_date.lte=2025-11-18&with_genres=18&without_genres=16';
+    //const tmdbApiEndpoint = 'https://search-proxy.bingeoutofficial.workers.dev/discover/tv?language=en-US&with_original_language=zh&sort_by=popularity.desc&first_air_date.gte=2020-01-01&first_air_date.lte=2025-11-18&with_genres=18&without_genres=16';
 
     // Fetch TV shows
     const fetchTVShows = async () => {
@@ -9229,7 +9229,7 @@ function injectJSONLD(data, type = 'movie') {
 <script>
   document.addEventListener('DOMContentLoaded', () => {  
     // API endpoint
-    const tmdbApiEndpoint = 'https://search-proxy.bingeoutofficial.workers.dev/discover/tv?language=en-US&with_original_language=ja&sort_by=popularity.desc&first_air_date.gte=2020-01-01&first_air_date.lte=2025-11-18&with_genres=16';
+    //const tmdbApiEndpoint = 'https://search-proxy.bingeoutofficial.workers.dev/discover/tv?language=en-US&with_original_language=ja&sort_by=popularity.desc&first_air_date.gte=2020-01-01&first_air_date.lte=2025-11-18&with_genres=16';
 
     // Fetch TV shows
     const fetchTVShows = async () => {
@@ -10141,7 +10141,7 @@ window.addEventListener("popstate", handleRoute);
   submitBtn.disabled = true;
 
   try {
-    const res = await fetch("https://report.bingeoutofficial.workers.dev", {
+    //const res = await fetch("https://report.bingeoutofficial.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
